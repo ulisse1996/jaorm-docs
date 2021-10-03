@@ -1,0 +1,28 @@
+---
+layout: default
+title: Lombok
+nav_order: 6
+---
+
+# Lombok
+
+Jaorm offers supports for Lombok annotations such **@Getter** , **@Setter** or
+**@Data**
+
+Core Module only use custom generated getter and setter from **Lombok** if **Jaorm Lombok**
+is provided as dependency
+
+```java
+@Data
+@Table(name = "LOMB")
+public class Lombok {
+
+    @Id
+    @Column(name = "LOMBOK_ID")
+    private int lombokId;
+
+    @Column(name = "LOMBOK_NAME")
+    private String name;
+
+}
+```

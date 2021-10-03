@@ -1,0 +1,64 @@
+---
+layout: default
+title: DSL
+nav_order: 3
+has_children: true
+---
+
+# DSL
+
+DSL is an abstraction over simple SQL Queries using a DSL.
+It can be combined with Query annotated implementation or used in a stand-alone class.
+
+Processor check if DSL is present in the classpath during processing annotation phase and create
+custom **EntityName**Columns class that contains constant defined columns used for type-safety building
+
+```java
+public class Test {
+
+    public static void main(String[] args) {
+        Jaorm.select(Entity.class)
+                .where(EntityColumns.COL1).eq("TEST")
+                .where(EntityColumns.COL2).ne(2)
+                .read();
+    }
+
+    public static class Entity {
+
+        @Id
+        @Column(name = "COL1")
+        private String col1;
+
+        @Column(name = "COL2")
+        private int col2;
+    }
+}
+```
+
+Supported operations :
+
+| Operation | EL Name | Standard Name |
+| --------- | ------  | ------------- |
+| = | eq | equalsTo |
+| != (<>) | ne | notEqualsTo |
+| \> | gt | greaterThan |
+| < | lt | lessThan |
+| \>= | ge | greaterOrEqualsTo |
+| <= | le | lessOrEqualsTo |
+
+DSL also supports :
+
+- In, with an **Iterable\<T>** 
+- Not in , with an **Iterable\<T>**
+- IsNull, null check
+- isNotNull, not null check
+- like , with support for Start, End or Full check (See **LikeType**)
+- notLike , with support for Start, End or Full check (See **LikeType**)
+- limit, with vendor specific syntax
+- offset, with vendor specific syntax
+
+DSL produce :
+
+- A **java.util.Optional\<T>**, for an optional result, using **readOpt** method
+- A **java.util.List\<T>**, for a list of result, using **readAll** method
+- An Entity instance , for a single result, using **read** method

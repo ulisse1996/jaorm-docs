@@ -5,7 +5,7 @@ description: >-
   JAORM use Java Annotation Processor JSR 269 for Entity Mapping Generation instead of Runtime Reflection API-based
   mappers which have high performance cost.
 baseurl: "/jaorm-docs"
-url: "https://ulisse1996.github.io/"
+url: "https://ulisse1996.github.io"
 twitter_username: ulisse1996
 github_username:  ulisse1996
 logo: "/assets/logo.png"

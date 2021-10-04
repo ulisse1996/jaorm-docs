@@ -1,0 +1,30 @@
+== 1 Core
+:toc: left
+
+Core Module contains Entity Mapper and Query annotated services.
+
+User must define and register a custom implementation of *DatasourceProvider* that return an instance of *javax.sql.Datasource* for execute SQL Statements.
+
+
+[source,java]
+----
+import io.github.ulisse1996.jaorm.entity.sql.DataSourceProvider;
+
+import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.util.AnnotationLiteral;
+import javax.sql.DataSource;
+
+public class DataSourceProviderImpl extends DataSourceProvider {
+
+    @Override
+    public DataSource getDataSource() {
+        return CDI.current().select(DataSource.class)
+                .get();
+    }
+}
+----
+
+
+include::entity-mapper/index.adoc[]
+include::query/index.adoc[]
+include::logging/index.adoc[]

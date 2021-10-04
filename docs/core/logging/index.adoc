@@ -1,0 +1,6 @@
+=== 1.3 Logging
+
+A default NoOp Logger is created for each service that use **JaormLogger**.
+
+User can redirect and use logged information implementing and https://docs.oracle.com/javase/tutorial/sound/SPI-intro.html[registering] a custom **JaormLoggerHandler**
+

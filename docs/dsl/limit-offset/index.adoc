@@ -1,0 +1,33 @@
+==== 2.1.6 Limit/Offset Clause
+
+User can limit and skip selected rows with *Offset* or *Limit* clause
+
+Jaorm will only accept value that are greater than 0 for offset and limit
+
+[source,java]
+----
+public class TestDSL {
+
+    public static void main(String[] args) {
+
+        QueryBuilder.select(MyEntity.class)
+            .limit(10)
+            .read();
+
+        QueryBuilder.select(MyEntity.class)
+            .offset(10)
+            .read();
+
+        QueryBuilder.select(MyEntity.class)
+            .offset(10)
+            .limit(10)
+            .read();
+    }
+}
+----
+
+===== 2.1.6.1 Vendor Specific Clause
+
+Jaorm will generate custom *Offset* and *Limit* clause with vendor-specific modules in classpath during runtime.
+
+User must provide only one sql-specific vendor implementation for entire project

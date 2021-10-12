@@ -1,0 +1,21 @@
+==== 2.1.5 Order Clause
+
+User can also order selected *Entity* with *order* clause
+
+*Order* clause like *where* and *join* also supports alias
+
+[source,java]
+----
+public class TestDSL {
+
+    public static void main(String[] args) {
+        QueryBuilder.select(MyEntity.class)
+            .orderBy(OrderType.DESC, COL_1)
+            .read();
+
+        QueryBuilder.select(MyEntity.class)
+            .orderBy(OrderType.ASC, COL_1, "A")
+            .read();
+    }
+}
+----

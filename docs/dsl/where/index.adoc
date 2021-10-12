@@ -1,0 +1,149 @@
+==== 2.1.3 Where Clause
+
+User can filter selected entity with a subset of *where* clauses using generated *Columns* classes for type-safety and different sql operations
+
+[source,java]
+----
+public class TestDSL {
+
+    public static void main(String[] args) {
+        QueryBuilder.select(MyEntity.class)
+                    .where(MyEntityColumn.COL_2).eq("Hello")
+                    .read();
+    }
+}
+----
+
+===== 2.1.3.1 El Expression
+
+Compatibile el expression operations available for create *where* clause
+
+|===
+|Method | SQL Result
+
+|*eq(value)*
+|*WHERE (MY_TABLE.COL_2 = ?)*
+
+|*ne(value)*
+|*WHERE (MY_TABLE.COL_2 <> ?)*
+
+|*lt(value)*
+|*WHERE (MY_TABLE.COL_2 < ?)*
+
+|*gt(value)*
+|*WHERE (MY_TABLE.COL_2 > ?)*
+
+|*le(value)*
+|*WHERE (MY_TABLE.COL_2 <= ?)*
+
+|*ge(value)*
+|*WHERE (MY_TABLE.COL_2 >= ?)*
+
+|===
+
+===== 2.1.3.2 Standard Expression
+
+Compatibile standard expression operations available for create *where* clause
+
+|===
+|Method | SQL Result
+
+|*equalsTo(value)*
+|*WHERE (MY_TABLE.COL_2 = ?)*
+
+|*notEqualsTo(value)*
+|*WHERE (MY_TABLE.COL_2 <> ?)*
+
+|*lessThan(value)*
+|*WHERE (MY_TABLE.COL_2 < ?)*
+
+|*greaterThan(value)*
+|*WHERE (MY_TABLE.COL_2 > ?)*
+
+|*lessOrEqualsTo(value)*
+|*WHERE (MY_TABLE.COL_2 <= ?)*
+
+|*greaterOrEqualsTo(value)*
+|*WHERE (MY_TABLE.COL_2 >= ?)*
+
+|===
+
+===== 2.1.3.3 Complex Operations
+
+*Where* clauses could also be used with complex operations like
+
+|===
+| Method | SQL
+
+|*in(Iterable)*
+|*WHERE (MY_TABLE.COL_2 IN (?,?))*
+
+|*in(Sub query)*
+|*WHERE (MY_TABLE.COL_2 IN (SELECT OTHER_TABLE.COL1 FROM OTHER_TABLE))*
+
+|*notIn(Iterable)*
+|*WHERE (MY_TABLE.COL_2 NOT IN (?,?))*
+
+|*notIn(Sub query)*
+|*WHERE (MY_TABLE.COL_2 IN (SELECT OTHER_TABLE.COL1 FROM OTHER_TABLE))*
+
+|*isNull()*
+|*WHERE (MY_TABLE.COL_2 IS NULL)*
+
+|*isNotNull()*
+|*WHERE (MY_TABLE.COL_2 IS NOT NULL)*
+
+|*like(LikeType)*
+|*WHERE (MY_TABLE.COL_2 LIKE ?)*
+
+|*notLike(LikeType)*
+|*WHERE (MY_TABLE.COL_2 NOT LIKE ?)*
+
+|===
+
+[TIP]
+====
+DSL will automatically generate 1..n wildcards for each element in *Iterable*
+====
+
+===== 2.1.3.4 Alias Support
+
+User can also use alias for select *where* clause column
+
+[source,java]
+----
+public class TestDSL {
+
+    public static void main(String[] args) {
+        QueryBuilder.select(MyEntity.class)
+                    .where(MyEntityColumn.COL_2, "B").eq("Hello")
+                    .read();
+    }
+}
+----
+
+===== 2.1.3.5 Complex Clause Generation
+
+With custom method *and/or* , User can also generate complex *where* clause like
+
+[source,java]
+----
+public class TestDSL {
+
+    public static void main(String[] args) {
+        QueryBuilder.select(MyEntity.class)
+                    .where(COL_1).eq(1).and(COL_2).ne("3")
+                    .orWhere(COL_1).ne(1).and(COL_2).ne("3")
+                    .read();
+    }
+}
+----
+
+that will generate
+
+[source,sql]
+----
+SELECT MY_TABLE.COL1, MY_TABLE.COL2 FROM MY_TABLE WHERE (MY_TABLE.COL1 = ? AND MY_TABLE.COL2 <> ?) OR (MY_TABLE.COL1 <> ? AND MY_TABLE.COL2 <> ?)
+----
+
+

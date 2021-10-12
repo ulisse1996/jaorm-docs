@@ -13,7 +13,7 @@ current transaction execute a rollback and close current transaction
 If an exception that doesn't match with second argument , is thrown , an **UnexpectedException** is thrown ,
 current transaction execute a rollback and close current transaction
 
-If **Callable\<V>** is correctly executed , **exec** return the returned value if any is provided,
+If **Callable<V>** is correctly executed , **exec** return the returned value if any is provided,
 current transaction execute a commit and close current transaction
 
 Transaction is propagated on the current Thread and on each child Thread

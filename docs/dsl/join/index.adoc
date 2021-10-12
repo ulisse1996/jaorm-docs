@@ -1,0 +1,132 @@
+==== 2.1.4 Join Clause
+
+User can filter selected entity with a subset of *join* clauses using generated *Columns* classes for type-safety and different sql operations
+
+[source,java]
+----
+public class TestDSL {
+
+    public static void main(String[] args) {
+         QueryBuilder.select(MyEntity.class)
+                    .join(MyEntityJoin.class, "A").on(COL_3).eq(COL_1)
+                    .where(COL_1).eq(null)
+                    .andWhere(COL_2).eq("Hello")
+                    .read();
+    }
+}
+----
+
+===== 2.1.4.1 El Expression
+
+Compatibile el expression operations available for create *join* clause
+
+|===
+|Method | SQL Result
+
+|*eq(Column)*
+|*JOIN MY_TABLE ON (MY_TABLE.COL_2 = OTHER_TABLE.COL_1)*
+
+|*ne(Column)*
+|*JOIN MY_TABLE ON (MY_TABLE.COL_2 <> OTHER_TABLE.COL_1)*
+
+|*lt(Column)*
+|*JOIN MY_TABLE ON (MY_TABLE.COL_2 < OTHER_TABLE.COL_1)*
+
+|*gt(Column)*
+|*JOIN MY_TABLE ON (MY_TABLE.COL_2 > OTHER_TABLE.COL_1)*
+
+|*le(Column)*
+|*JOIN MY_TABLE ON (MY_TABLE.COL_2 <= OTHER_TABLE.COL_1)*
+
+|*ge(Column)*
+|*JOIN MY_TABLE ON (MY_TABLE.COL_2 >= OTHER_TABLE.COL_1)*
+
+|===
+
+===== 2.1.4.2 Standard Expression
+
+Compatibile standard expression operations available for create *join* clause
+
+|===
+|Method | SQL Result
+
+|*equalsTo(Column)*
+|*JOIN MY_TABLE ON (MY_TABLE.COL_2 = OTHER_TABLE.COL_1)*
+
+|*notEqualsTo(Column)*
+|*JOIN MY_TABLE ON (MY_TABLE.COL_2 <> OTHER_TABLE.COL_1)*
+
+|*lessThan(Column)*
+|*JOIN MY_TABLE ON (MY_TABLE.COL_2 < OTHER_TABLE.COL_1)*
+
+|*greaterThan(Column)*
+|*JOIN MY_TABLE ON (MY_TABLE.COL_2 > OTHER_TABLE.COL_1)*
+
+|*lessOrEqualsTo(Column)*
+|*JOIN MY_TABLE ON (MY_TABLE.COL_2 <= OTHER_TABLE.COL_1)*
+
+|*greaterOrEqualsTo(Column)*
+|*JOIN MY_TABLE ON (MY_TABLE.COL_2 >= OTHER_TABLE.COL_1)*
+
+|===
+
+===== 2.1.4.3 Complex Operations
+
+*Join* clauses could also be used with complex operations like
+
+|===
+| Method | SQL
+
+|*like(LikeType, Column)*
+|*JOIN MY_TABLE ON (MY_TABLE.COL_2 LIKE OTHER_TABLE.COL_1)*
+
+|*notLike(LikeType, Column)*
+|*JOIN MY_TABLE ON (MY_TABLE.COL_2 NOT LIKE OTHER_TABLE.COL_1)*
+
+|===
+
+===== 2.1.4.4 Alias Support
+
+User can also use alias for multiple joins between different tables
+
+[source,java]
+----
+public class TestDSL {
+
+    public static void main(String[] args) {
+         QueryBuilder.select(MyEntity.class)
+                    .join(MyEntityJoin.class, "A").on(COL_3).eq(COL_1)
+                    .join(MyOtherJoin.class, "B").on(COL_5).eq(COL_3, "A")
+                    .where(COL_1).eq(null)
+                    .andWhere(COL_2).eq("Hello")
+                    .read();
+    }
+}
+----
+
+===== 2.1.4.5 Complex Clause Generation
+
+With custom method *on/orOn* , User can also generate complex *join* clause like
+
+[source,java]
+----
+public class TestDSL {
+
+    public static void main(String[] args) {
+        QueryBuilder.select(MyEntity.class)
+                    .join(MyEntityJoin.class, "A")
+                        .on(COL_4).eq(COL_2)
+                        .on(COL_3).eq(COL_1).orOn(COL_4).ne(COL_2)
+                    .where(COL_1).eq(1)
+                    .andWhere(COL_3, "A").ne(2)
+                    .read()
+    }
+}
+----
+
+that will generate
+
+[source,sql]
+----
+SELECT MY_TABLE.COL1, MY_TABLE.COL2 FROM MY_TABLE JOIN MY_TABLE_JOIN AS A ON (A.COL4 = MY_TABLE.COL2) AND (A.COL3 = MY_TABLE.COL1) OR (A.COL4 <> MY_TABLE.COL2) WHERE (MY_TABLE.COL1 = ?) AND (A.COL3 <> ?)
+----

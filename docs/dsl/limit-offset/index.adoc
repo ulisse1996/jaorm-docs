@@ -31,3 +31,4 @@ public class TestDSL {
 Jaorm will generate custom *Offset* and *Limit* clause with vendor-specific modules in classpath during runtime.
 
 User must provide only one sql-specific vendor implementation for entire project
+

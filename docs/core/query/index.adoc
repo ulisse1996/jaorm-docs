@@ -1,4 +1,4 @@
-=== 1.2 Query Processor
+=== 1.3 Query Processor
 
 For each interface that contains a method with **@Query** annotation or is annotated with **@Dao** annotation, an implementation is generated.
 
@@ -82,7 +82,20 @@ public class MyDaoImpl implements MyDao {} // @RequestScoped is propagated
 User can also use custom types that can be converted to sql types if the converter is already used on an *Entity*
 ====
 
-==== 1.2.1 Fast Table Read
+==== 1.2.1 Supported Return Type
+
+Custom generated Queries supports return types like :
+
+- *Void*, for Update/Delete SQL
+- *Optional<T>*, for an optional entity/projection
+- *Optional<TableRow>*, for an optional mappable row
+- *List<T>*, for a collection of entities/projections
+- *Stream<T>*, for a stream of entities/projections
+- *Stream<TableRow>*, for a stream of mappable rows
+- *TableRow*, for a mappable row
+- *T*, for an entity or a projection or a supported accessible type
+
+==== 1.2.2 Fast Table Read
 
 User can also use generated **Tables** entry point for type-safe read of an Entity.
 
@@ -95,5 +108,21 @@ public class Test {
   public static void main(String... args) {
     User user = Tables.USER_TABLE.userId(10).read();
   }
+}
+----
+
+==== 1.2.3 SQL in File
+
+User can also use stored SQL located in resources.
+
+TIP: Jaorm will read and replace SQL location with full text during compile phase before validation.
+
+[source,java]
+----
+@Dao
+public interface CustomUserDao {
+
+    @Query(sql = "/mySql.sql")
+    Optional<User> getUserOpt(int userId);
 }
 ----

@@ -27,7 +27,7 @@ public class Entity {
 
 IMPORTANT: Jaorm will lock and update atomically valueColumn during auto-generation process. User must provide a custom implementation for lock select-update using jaorm specific sql syntax (see xref:../../vendor-specific/index.adoc[Vendor Specific])
 
-===== 1.1.1.3 CustomGenerated
+===== 1.1.1.3 Custom Generated
 
 *CustomGenerated* will generate a custom value using a custom implementation of *CustomGenerator* provided by the user.
 
@@ -35,3 +35,74 @@ IMPORTANT: Jaorm will lock and update atomically valueColumn during auto-generat
 ====
 Provided value must be compatible with field type.
 ====
+
+===== 1.1.1.4 Default Initializers
+
+Jaorm will generate default values for annotated field with *DefaultNumeric*, *DefaultString* and *DefaultTemporal* during persist event
+
+[source, java]
+----
+@Table(name = "ENTITY_WITH_DEFAULTS")
+public class EntityWithDefaults {
+
+    @Id
+    @Column(name = "E_ID")
+    private BigInteger id;
+
+    @Column(name = "E_STR")
+    @DefaultString("STRING")
+    private String str;
+
+    @Column(name = "E_NUM")
+    @DefaultNumeric(0.390)
+    private BigDecimal dec;
+
+    @Column(name = "E_DATE")
+    @DefaultTemporal
+    private Date date;
+
+    @Column(name = "E_DATE_FORMAT")
+    @DefaultTemporal(format = "dd-MM-yyyy'T'HH:mm:ss", value = "20-10-2022T00:00:00")
+    private Date dateWithFormat;
+
+    public Date getDateWithFormat() {
+        return dateWithFormat;
+    }
+
+    public void setDateWithFormat(Date dateWithFormat) {
+        this.dateWithFormat = dateWithFormat;
+    }
+
+    public BigInteger getId() {
+        return id;
+    }
+
+    public void setId(BigInteger id) {
+        this.id = id;
+    }
+
+    public String getStr() {
+        return str;
+    }
+
+    public void setStr(String str) {
+        this.str = str;
+    }
+
+    public BigDecimal getDec() {
+        return dec;
+    }
+
+    public void setDec(BigDecimal dec) {
+        this.dec = dec;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+}
+----

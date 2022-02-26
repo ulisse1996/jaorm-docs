@@ -26,5 +26,7 @@ public class DataSourceProviderImpl extends DataSourceProvider {
 
 
 include::entity-mapper/index.adoc[]
+include::projection/index.adoc[]
 include::query/index.adoc[]
 include::logging/index.adoc[]
+include::pagination/index.adoc[]

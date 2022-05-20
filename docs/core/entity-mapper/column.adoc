@@ -2,7 +2,7 @@
 
 User can declare one or more *@Column* annotated fields that are used by Jaorm for retrieve all selected columns from a table.
 
-IMPORTANT: Each field that is annotated with *@Column* are treated as ignored property by Jaorm
+IMPORTANT: Each field that is not annotated with *@Column* are treated as ignored property by Jaorm
 
 [source,java]
 ----

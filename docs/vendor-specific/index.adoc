@@ -1,8 +1,0 @@
-== 3 Vendor Specific
-
-**VendorSpecific** use customized modules for modify unsupported SQL Syntax in DSL Module like
-
-- **Like Support**
-- **Limit Offset Support**
-- *Read Lock For Update*
-
